@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f6f0">
+  <title>营会游戏复盘引导 Agent</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="营会复盘引导 Agent 首页">
+        <span class="brand-mark" aria-hidden="true">地</span>
+        <span>地球小卫士 · 引导助手</span>
+      </a>
+      <div id="model-status" class="status-pill" role="status">
+        <span class="status-dot"></span><span>正在检查模型连接…</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <p class="eyebrow">社区营会 · 游戏后的分享时刻</p>
+        <h1>让孩子的体验，<br><span>自然回到课程主题。</span></h1>
+        <p class="hero-copy">选一个活动，记下现场发生的事。引导助手会提供不同的学生回应和接话方向，帮助你把分享继续下去。</p>
+        <div class="hero-meta"><span>适用 6–12 岁</span><span>工作人员主导</span><span>中文引导</span></div>
+      </section>
+
+      <section class="workspace" aria-label="生成引导建议">
+        <form id="guide-form" class="input-panel">
+          <div class="panel-heading">
+            <div><p class="eyebrow">第一步</p><h2>告诉我这场活动</h2></div>
+            <span class="step-number">01</span>
+          </div>
+
+          <label for="activity">课程活动</label>
+          <select id="activity" name="activity_id" required></select>
+          <div id="activity-context" class="activity-context" aria-live="polite"></div>
+
+          <section id="custom-case-panel" class="custom-case-panel" hidden aria-label="导入自己的案例">
+            <p class="custom-case-intro">上传课程材料，或直接粘贴摘要。系统只提取文字用于本次生成，不会保存原文件。</p>
+            <label for="case-file">上传案例文件 <span class="optional">PDF、DOCX、TXT、MD，最大 8 MB</span></label>
+            <input id="case-file" type="file" accept=".pdf,.docx,.txt,.md,application/pdf,text/plain,text/markdown,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+            <p id="upload-status" class="upload-status" role="status"></p>
+            <label for="custom-title">案例名称</label>
+            <input id="custom-title" type="text" maxlength="120" placeholder="例如：认识社区里的水资源">
+            <label for="custom-theme">课程主题</label>
+            <input id="custom-theme" type="text" maxlength="240" placeholder="这次活动希望回到什么主题？">
+            <label for="custom-objective">学习目标</label>
+            <textarea id="custom-objective" maxlength="1200" rows="2" placeholder="孩子结束分享时，希望能理解或思考什么？"></textarea>
+            <label for="custom-game">游戏 / 活动内容</label>
+            <textarea id="custom-game" maxlength="2400" rows="3" placeholder="写下活动规则、关键选择或学生经历的过程。"></textarea>
+            <label for="custom-materials">课程材料文字 <span class="optional">可编辑；最多 12,000 字符</span></label>
+            <textarea id="custom-materials" maxlength="12000" rows="5" placeholder="上传文件后，提取的文字会显示在这里供你检查；也可以直接粘贴课程资料摘要。"></textarea>
+            <p class="field-hint">请确认提取文字准确，并删除儿童姓名、联系方式等个人信息。</p>
+          </section>
+
+          <div class="field-row">
+            <div>
+              <label for="age-group">学生年龄</label>
+              <select id="age-group" name="age_group">
+                <option>6–8岁</option>
+                <option selected>9–12岁</option>
+              </select>
+            </div>
+            <div>
+              <label for="duration">分享时间</label>
+              <select id="duration" name="duration">
+                <option>5分钟</option>
+                <option selected>10分钟</option>
+                <option>15分钟</option>
+              </select>
+            </div>
+          </div>
+
+          <label for="observation">现场发生了什么？ <span class="optional">选填</span></label>
+          <textarea id="observation" name="observation" maxlength="1200" rows="5" placeholder="例如：两组对某张卡片分类意见不同；有孩子说“我家都是直接扔掉的”。请勿填写姓名或联系方式。"></textarea>
+          <div class="field-hint"><span>可以写学生的原话、分歧、沉默或跑题情况。</span><span id="char-count">0 / 1200</span></div>
+
+          <button id="generate-button" class="primary-button" type="submit">
+            <span>生成分享引导</span><span aria-hidden="true">↗</span>
+          </button>
+          <p class="privacy-note"><span aria-hidden="true">◌</span> 不保存本次输入或上传文件；连接模型时，案例文字会发送给所配置的模型服务商。请勿填写可识别儿童的信息。</p>
+        </form>
+
+        <section id="result-panel" class="result-panel" aria-live="polite" aria-label="引导建议">
+          <div id="empty-state" class="empty-state">
+            <div class="orbit-art" aria-hidden="true"><span class="orbit orbit-one"></span><span class="orbit orbit-two"></span><span class="planet">🌱</span></div>
+            <p class="eyebrow">第二步</p>
+            <h2>把分享空间留给孩子</h2>
+            <p>生成结果会提供一个切入点、几种可能的学生回应和接话方式。你可以按现场情况挑选，不必照稿念。</p>
+            <div class="empty-checklist"><span>01　从游戏体验开始</span><span>02　听见不同声音</span><span>03　回到当天主题</span></div>
+          </div>
+          <div id="loading-state" class="loading-state" hidden>
+            <span class="loader" aria-hidden="true"></span>
+            <h2>正在整理引导思路</h2>
+            <p>把课程目标和现场观察连起来…</p>
+          </div>
+          <div id="error-state" class="error-state" hidden role="alert"></div>
+          <div id="result-content" hidden></div>
+        </section>
+      </section>
+
+      <section class="principle-strip">
+        <span class="principle-icon" aria-hidden="true">✳</span>
+        <p><strong>模拟回答是预演，不是真实学生发言。</strong> 引导助手提供可能的对话路径；现场节奏、学生感受和安全判断始终由工作人员决定。</p>
+      </section>
+    </main>
+
+    <footer class="footer"><span>社区营会游戏复盘引导 Agent</span><span>活动结束后，继续一段好奇的对话。</span></footer>
+  </div>
+  <script src="/app.js" defer></script>
+</body>
+</html>
